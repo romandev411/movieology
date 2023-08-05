@@ -10,7 +10,6 @@ router.get('/search', async ({ query: { searchTerm } }: SearchRequest, res) => {
     try {
         const searchResult = await axios.get(`${BASE_SEARCH_URL}${searchTerm}`);
         const $ = cheerio.load(searchResult.data);
-        // const data = $('.results td:last-child a').toArray();
         const pagination = $('.pagination a')
             .toArray()
             .map(el => {
@@ -30,8 +29,9 @@ router.get('/search', async ({ query: { searchTerm } }: SearchRequest, res) => {
                     const magnet = $(magnetTag).attr('href').split('&')[0].replace('magnet:?xt=urn:btih:', '');
                     const title = $(titleTag).text();
                     const link = $(titleTag).attr('href');
+                    const hrefTitle = $(titleTag).attr('href').split('/');
 
-                    return { magnet, title, link };
+                    return { magnet, title, link, hrefTitle: hrefTitle[hrefTitle.length - 1] };
                 });
             linkInPages.push(results);
 

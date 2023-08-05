@@ -10,10 +10,14 @@
     <body>
         <div id="app">
             <video :src="videoUrl" controls autoplay width="300"></video>
+            <div>
+                <input type="text" v-model="searchTerm" placeholder="Search" />
+                <button type="button" @click="findMovie">Search</button>
+            </div>
             <ul>
-                <li v-for="({magnet, fileName}) in files" :key="magnet">
-                    <div>{{fileName}}</div>
-                    <button @click="play({magnet, fileName})">Play</button>
+                <li v-for="file in files" :key="magnet">
+                    <div>{{file.title}}</div>
+                    <button @click="play(file)">Play</button>
                 </li>
             </ul>
         </div>
@@ -25,24 +29,27 @@
                 data() {
                     return {
                         activeVideo: '',
-                        files: [
-                            {
-                                magnet: '7E05536D5F9D30267727D0EACD55AE1201981128',
-                                fileName:
-                                    'Foundation.S02E01.In.Seldons.Shadow.1080p.ATVP.WEB-DL.DDP5.1.H.264-EniaHD.mkv',
-                            },
-                        ],
+                        searchTerm: '',
+                        files: [],
                     };
                 },
                 computed: {
                     videoUrl: ({ activeVideo }) =>
-                        activeVideo.fileName ? `/stream/${activeVideo.magnet}/${activeVideo.fileName}` : '',
+                        activeVideo.title ? `/stream/${activeVideo.magnet}/${activeVideo.title}` : '',
                 },
                 methods: {
                     async play(file) {
                         const response = await axios.get(`/stream/add/${file.magnet}`);
 
-                        this.activeVideo = file;
+                        this.activeVideo = {
+                            title: response.data[0].name,
+                            magnet: file.magnet,
+                        };
+                    },
+                    async findMovie() {
+                        const response = await axios.get(`/movies/search?searchTerm=${this.searchTerm}`);
+
+                        this.files = response.data;
                     },
                 },
             }).mount('#app');
