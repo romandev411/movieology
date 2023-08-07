@@ -65,7 +65,6 @@ interface ErrorWithStatus extends Error {
 }
 
 router.get('/:magnet/:fileName', (req: StreamRequest, res: Response, next: NextFunction) => {
-    console.log(req.range);
     const {
         params: { magnet, fileName },
         headers: { range },
@@ -95,11 +94,6 @@ router.get('/:magnet/:fileName', (req: StreamRequest, res: Response, next: NextF
     const end = endParsed ? Number(endParsed) : fileSize - 1;
 
     const chankSize = end - start + 1;
-
-    console.log('fileSize', fileSize);
-    console.log('start', start);
-    console.log('endParsed', endParsed);
-    console.log('chankSize', chankSize);
 
     const headers = {
         'Content-Range': `bytes ${start}-${end}/${fileSize}`,

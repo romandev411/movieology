@@ -5,3 +5,22 @@ export interface SearchRequest extends Request {
         searchTerm: string;
     };
 }
+
+export interface Movie {
+    title: string;
+    plot: string;
+    year: string;
+    director: string;
+    actors: string[];
+    poster: string;
+    trailer: string;
+    _id?: string;
+    boxOffice: string;
+    released: string;
+    writer: string;
+    runtime: string;
+    ratingImdb: string;
+    imdbId: string;
+    rated: string;
+    genres: string[];
+}
