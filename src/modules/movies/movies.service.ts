@@ -24,11 +24,11 @@ export const movieSearch = async (searchTerm: string) => {
                 const titleTag = $(m).find('dt').find('a');
                 const magnetTag = $(m).find('dd').find('a');
                 const magnet = $(magnetTag).attr('href').split('&')[0].replace(MAGNET_KEY, '');
-                const title = $(titleTag).text();
+                const fileName = $(titleTag).text();
                 const link = $(titleTag).attr('href');
                 const hrefTitle = $(titleTag).attr('href').split('/');
 
-                return { magnet, title, link, hrefTitle: hrefTitle[hrefTitle.length - 1] };
+                return { magnet, fileName, link, hrefTitle: hrefTitle[hrefTitle.length - 1] };
             });
         linkInPages.push(results);
 
@@ -43,6 +43,7 @@ export const movieSearch = async (searchTerm: string) => {
 export const create = async (input: Movie) => {
     const item = new MovieEntity(input);
     await item.save();
+    return item;
 };
 
 export const update = (input: Partial<Movie>, id: string) => {

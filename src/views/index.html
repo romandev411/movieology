@@ -16,7 +16,7 @@
             </div>
             <ul>
                 <li v-for="file in files" :key="magnet">
-                    <div>{{file.title}}</div>
+                    <div>{{file.fileName}}</div>
                     <button @click="play(file)">Play</button>
                 </li>
             </ul>
@@ -35,14 +35,14 @@
                 },
                 computed: {
                     videoUrl: ({ activeVideo }) =>
-                        activeVideo.title ? `/stream/${activeVideo.magnet}/${activeVideo.title}` : '',
+                        activeVideo.fileName ? `/stream/${activeVideo.magnet}/${activeVideo.fileName}` : '',
                 },
                 methods: {
                     async play(file) {
                         const response = await axios.get(`/stream/add/${file.magnet}`);
 
                         this.activeVideo = {
-                            title: response.data[0].name,
+                            fileName: response.data[0].name,
                             magnet: file.magnet,
                         };
                     },
@@ -51,6 +51,14 @@
 
                         this.files = response.data;
                     },
+                    async getMyMovies() {
+                        const response = await axios.get(`/movies`);
+
+                        this.files = response.data;
+                    },
+                },
+                mounted() {
+                    this.getMyMovies();
                 },
             }).mount('#app');
         </script>

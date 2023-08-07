@@ -3,6 +3,18 @@ import { Movie } from './movies.interfaces';
 
 const entity = new Schema<Movie>({
     title: { type: String, default: '' },
+    magnet: {
+        type: String,
+        default: '',
+    },
+    fileName: {
+        type: String,
+        default: '',
+    },
+    soutceUrl: {
+        type: String,
+        default: '',
+    },
     plot: { type: String, default: '' },
     year: { type: String, default: '' },
     director: { type: String, default: '' },

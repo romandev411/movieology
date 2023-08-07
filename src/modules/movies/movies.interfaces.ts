@@ -1,3 +1,4 @@
+import { update } from './movies.service';
 import { Request } from 'express';
 
 export interface SearchRequest extends Request {
@@ -6,8 +7,34 @@ export interface SearchRequest extends Request {
     };
 }
 
+export interface CreateMovieRequest extends Request {
+    body: Movie;
+}
+
+export interface UpdateMovieRequest extends Request {
+    body: Partial<Movie>;
+    params: {
+        id: string;
+    };
+}
+
+export interface DeleteMovieRequest extends Request {
+    params: {
+        id: string;
+    };
+}
+
+export interface GetMovieRequest extends Request {
+    params: {
+        id: string;
+    };
+}
+
 export interface Movie {
     title: string;
+    magnet: string;
+    fileName: string;
+    soutceUrl: string;
     plot: string;
     year: string;
     director: string;
