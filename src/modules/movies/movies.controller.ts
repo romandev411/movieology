@@ -13,6 +13,15 @@ router.get('/search', async ({ query: { searchTerm } }: SearchRequest, res) => {
     }
 });
 
+router.get('/imdb-search', async ({ query: { searchTerm } }: SearchRequest, res) => {
+    try {
+        const result = await movieService.searchImdb(searchTerm);
+        res.status(200).send(result);
+    } catch (err) {
+        res.status(400).send(err);
+    }
+});
+
 router.post('/', async ({ body }: CreateMovieRequest, res) => {
     try {
         const result = await movieService.create(body);
